@@ -1,0 +1,7 @@
+ClayYM
+Copyright 2026 Kévin Rémondière
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+It contains no third-party code. Mathlib and its dependencies (Apache-2.0) are fetched at build
+time from their own repositories, at the revisions pinned in lake-manifest.json, and are not
+redistributed here.

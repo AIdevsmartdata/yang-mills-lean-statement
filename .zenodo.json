@@ -1,0 +1,44 @@
+{
+  "title": "ClayYM: a candidate Lean 4 statement of the Yang–Mills existence and mass gap problem, with compiled guards against fake models",
+  "upload_type": "software",
+  "description": "<p>Lean 4 / Mathlib <em>definitions</em> of three candidate formal statements of the Clay Millennium problem “Yang–Mills existence and mass gap” (A. Jaffe and E. Witten, official problem description): a Wilson lattice-limit variant (A), an axiomatic variant with a Yang–Mills fingerprint (B: Osterwalder–Schrader axioms, mass gap, finite mass, conserved Ward-normalised stress tensor, trace-anomaly coefficient κ = 3 dim G/π⁴, universal correction −102/121, C<sub>T</sub> = dim G × C<sub>T</sub>(Maxwell), indecomposability), and their conjunction (AB, recommended).</p><p>The statements are open definitions (<code>def … : Prop</code>). Compiled guard theorems show that known fake models (the trivial theory, free fields, U(1), decoupled products) do not satisfy them, and that the quantifier over compact simple gauge groups is not vacuous (SU(2) is an instance). Every declaration depends only on the three standard axioms; <code>scripts/verify.sh</code> rebuilds the library, audits the axioms of every declaration and re-runs the SymPy check of the fingerprint constants.</p><p><strong>This is not a proof and not progress on the problem.</strong> Declared limitations: variants A and AB require the Wilson lattice route (more than the Clay problem asks about the method); Osterwalder–Schrader reconstruction is not formalised; the field content is partial (the 21 components of Tr F<sub>μν</sub>F<sub>ρσ</sub>). See the README and STATEMENT.md.</p><p><strong>AI use.</strong> The Lean code and the texts were written by AI agents (Claude, Anthropic) under the direction of Kévin Rémondière, the sole human author. The verifications are mechanical (Lean kernel, axiom audit, SymPy, an independent kernel run locally). No expert human review has been carried out; the repository owner approved this release on 25 October 2026.</p><p>Not affiliated with, reviewed by, or endorsed by the Clay Mathematics Institute.</p>",
+  "creators": [
+    {
+      "name": "Rémondière, Kévin",
+      "affiliation": "Independent researcher",
+      "orcid": "0009-0008-2443-7166"
+    }
+  ],
+  "access_right": "open",
+  "license": "apache-2.0",
+  "keywords": [
+    "Yang–Mills",
+    "mass gap",
+    "Millennium Prize Problems",
+    "Lean 4",
+    "Mathlib",
+    "formal statement",
+    "formalization",
+    "Osterwalder–Schrader axioms",
+    "lattice gauge theory",
+    "asymptotic freedom"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://www.claymath.org/wp-content/uploads/2022/06/yangmills.pdf",
+      "relation": "references",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/lean-dojo/LeanMillenniumPrizeProblems",
+      "relation": "references",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/lixiang90/math-challenge-millennium/issues/2",
+      "relation": "references",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Candidate formal statement, not a proof. Written by AI agents (Claude, Anthropic) under the direction of the author; mechanically verified; see README, sections Limitations and AI use."
+}

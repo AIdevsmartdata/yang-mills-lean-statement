@@ -1,0 +1,24 @@
+(1) trace de T (bilinéaire résiduel) : 0  [T sans trace : OK]
+(2) valeurs de C_T trouvées : {4/pi**4}  (attendu 4/pi^4 = 16/S_4^2) ; structure conforme : OK
+(3) c_F2 = |x|^8 <F2(x) F2(0)> : {48/pi**4}
+(4a) int_0^oo (4 pi s)^-2 exp(-r^2/4s) ds = 1/(4*pi**2*r**2)
+(4b) <:phi^k: :phi^l:> = delta_kl k! C^k : vérifié par énumération pour k,l <= 6
+(5) b1/b0^2 = 102/121
+(6)  L        (4 b0^2 L^2 a^2 - 1) * L / ln L     [limite attendue -b1/b0^2 = -0.84297521]
+     1e3    -0.944213955458
+     1e5    -0.90616784686
+     1e8    -0.882512241159
+     1e12   -0.869333298752
+     1e16   -0.862743775728
+(7a) kappa = lim |x|^8 <theta theta>_c (ln|x|)^2 = 3*dimG/pi**4   [b0 s'élimine : kappa ne dépend que de dim G]
+(7b) FP2 avec le facteur COMPLET (beta/2g)^2 = (b0 a + b1 a^2)^2/4 à deux boucles :
+     C_A   L      (16 L^2 (beta/2g)^2 - 1) * L / ln L   [limite -102/121 = -0.84297521, convergence en 1/ln L]
+     2     1e5    -0.8329592543
+     2     1e16   -0.8398625582
+     2     1e40   -0.8417301472
+     3     1e5    -0.8329592543
+     3     1e16   -0.8398625582
+     3     1e40   -0.8417301472
+     5     1e5    -0.8329592543
+     5     1e16   -0.8398625582
+     5     1e40   -0.8417301472

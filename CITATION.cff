@@ -1,0 +1,38 @@
+# Citation metadata (Citation File Format 1.2.0). GitHub uses this file for "Cite this repository".
+# Zenodo ignores it because .zenodo.json is present; keep the two files consistent.
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below. It is a candidate formal statement, not a proof."
+title: "ClayYM: a candidate Lean 4 statement of the Yang–Mills existence and mass gap problem, with compiled guards against fake models"
+type: software
+authors:
+  - family-names: "Rémondière"
+    given-names: "Kévin"
+    affiliation: "Independent researcher"
+    orcid: "https://orcid.org/0009-0008-2443-7166"
+repository-code: "https://github.com/AIdevsmartdata/yang-mills-lean-statement"
+license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-10-25"
+# doi: "10.5281/zenodo.XXXXXXX"  (add once Zenodo has minted the DOI)
+abstract: >-
+  Lean 4 / Mathlib definitions of three candidate formal statements of the Clay Millennium
+  problem "Yang–Mills existence and mass gap" (Jaffe–Witten): a Wilson lattice-limit variant (A),
+  an axiomatic variant with a Yang–Mills fingerprint (B), and their conjunction (AB, recommended).
+  The statements are open definitions (def … : Prop); compiled guard theorems show that known
+  fake models (trivial theory, free fields, U(1), decoupled products) do not satisfy them and that
+  the quantifier over compact simple gauge groups is not vacuous (SU(2) is an instance). This is
+  not a proof and not progress on the problem. Declared limitations: A and AB require the Wilson
+  lattice route, OS reconstruction is not formalised, and the field content is partial. The Lean
+  code and the texts were written by AI agents (Claude, Anthropic) under the direction of the
+  author; the verifications are mechanical (see the README).
+keywords:
+  - Yang–Mills
+  - mass gap
+  - Millennium Prize Problems
+  - Lean 4
+  - Mathlib
+  - formal statement
+  - formalization
+  - Osterwalder–Schrader axioms
+  - lattice gauge theory
+  - asymptotic freedom
