@@ -11,9 +11,9 @@ authors:
     orcid: "https://orcid.org/0009-0008-2443-7166"
 repository-code: "https://github.com/AIdevsmartdata/yang-mills-lean-statement"
 license: Apache-2.0
+doi: "10.5281/zenodo.23644079"
 version: "1.0.0"
 date-released: "2026-10-25"
-# doi: "10.5281/zenodo.XXXXXXX"  (add once Zenodo has minted the DOI)
 abstract: >-
   Lean 4 / Mathlib definitions of three candidate formal statements of the Clay Millennium
   problem "Yang–Mills existence and mass gap" (Jaffe–Witten): a Wilson lattice-limit variant (A),

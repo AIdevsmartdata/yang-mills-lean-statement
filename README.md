@@ -1,5 +1,10 @@
 # ClayYM: a candidate Lean 4 statement of the Yang–Mills existence and mass gap problem, with compiled guards against fake models
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23644079.svg)](https://doi.org/10.5281/zenodo.23644079)
+
+Archived on Zenodo: all versions [doi:10.5281/zenodo.23644079](https://doi.org/10.5281/zenodo.23644079); v1.0.0 [doi:10.5281/zenodo.23644080](https://doi.org/10.5281/zenodo.23644080).
+
+
 > **Status: candidate statement, unreviewed.** This repository contains Lean 4 *definitions* (`def … : Prop`) and compiled sanity checks. It is **not** a proof, a partial proof, or any progress on the Yang–Mills existence and mass gap problem, and nothing here asserts that the statements are true. The Lean code and the texts were written by AI agents under the direction of the author (see [AI use](#ai-use)). Please read [Limitations](#limitations) before using these statements.
 
 This project is not affiliated with, reviewed by, or endorsed by the Clay Mathematics Institute. "Clay" in the name refers only to the problem statement it attempts to formalise.
