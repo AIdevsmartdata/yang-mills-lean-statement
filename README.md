@@ -117,7 +117,7 @@ Negative controls: adding `theorem t : (1 : ℕ) = 2 := by sorry` to the namespa
 
 The labels printed by the SymPy script (and the file names under `constants/`) are in French; they were kept unchanged when the comments were translated into English, so that the committed reference output stays byte-identical to the one checked before the translation.
 
-An additional check with an independent kernel was run locally on 2026-10-25 and is not part of the script: nanoda 0.4.19, on a `lean4export` dump of the 44 guards and the 3 statements, reported "Checked 51133 declarations with no errors", with only the three standard axioms. For v1.1-dev (2026-10-25, fresh copy made with `git archive`): a dump of the 88 guards and results of `Audit.lean`, the 3 statements, `QGap`, `OSReconstruction` and `HasMassGap` (94 constants) gave "Checked 52268 declarations with no errors", again with only the three standard axioms, and the negative witness (`1 = 2` by `sorry`) was rejected ("unpermitted axiom \"sorryAx\"").
+An additional check with an independent kernel was run locally on 2026-10-25 and is not part of the script: nanoda 0.4.19, on a `lean4export` dump of the 44 guards and the 3 statements, reported "Checked 51133 declarations with no errors", with only the three standard axioms. For v1.1-dev (2026-10-25, fresh copy made with `git archive`): a dump of the 94 guards and results of `Audit.lean`, the 3 statements, `QGap`, `OSReconstruction` and `HasMassGap` (100 constants) gave "Checked 52330 declarations with no errors", again with only the three standard axioms, and the negative witness (`1 = 2` by `sorry`) was rejected ("unpermitted axiom \"sorryAx\"").
 
 ## Repository layout
 

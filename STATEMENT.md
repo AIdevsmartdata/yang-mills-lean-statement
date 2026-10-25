@@ -396,7 +396,7 @@ Reusable obstruction lemmas (proved):
    - No project axiom.
    - Lean v4.34.0 (released on 2026-09-14), later than v4.33.1 (2026-08-21), the release that according to L. de Moura's postmortem (2026-08-24) fixed all the issues found during the summer-2026 kernel soundness bug hunt.
    - Second, independent kernel nanoda 0.4.19, without the Lean runtime or GMP: 51 133 declarations without error; axioms = the three standard ones; negative witness (`1 = 2` by `sorry`) rejected. This check was run locally and is not part of `scripts/verify.sh`.
-   - v1.1-dev: the same chain on a fresh copy made with `git archive` (94 constants: the 88 lines of `Audit.lean`, the 3 statements, `QGap`, `OSReconstruction`, `HasMassGap`) gives 52 268 declarations without error, the three standard axioms only, and the negative witness is rejected. The named hypothesis is not an axiom, so it does not appear in this list: it appears in the statements (§3.7).
+   - v1.1-dev: the same chain on a fresh copy made with `git archive` (100 constants: the 94 lines of `Audit.lean`, the 3 statements, `QGap`, `OSReconstruction`, `HasMassGap`) gives 52 330 declarations without error, the three standard axioms only, and the negative witness is rejected. The named hypothesis is not an axiom, so it does not appear in this list: it appears in the statements (§3.7).
    - Rebuild from a clean copy of the sources: green (see `README.md`).
 7. **External witnesses.**
    - The witness against math-challenge.org (Lean 4.32.2) and the witness against lean-dojo (Lean 4.31.0) were checked with the toolchains pinned by those repositories, by `#print axioms` and `leanchecker` (without `--fresh`) only; they were not passed through nanoda, for lack of `lean4export` for those versions.
