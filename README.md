@@ -99,15 +99,17 @@ The script runs `lake exe cache get`, `lake build ClayYM` and `lake build ClayYM
 
 Set `CLAYYM_SKIP_CACHE_GET=1` to skip `lake exe cache get` when Mathlib is already built locally.
 
-Expected summary (observed on a fresh copy of this repository, 2026-10-25):
+Expected summary (v1.1-dev, observed on a fresh copy made with `git archive`, 2026-10-25, with `CLAYYM_SKIP_CACHE_GET=1`; v1.0.0 printed 430 constants and 248 theorems):
 
 ```
-AUDIT ClayYM: 430 constants, 248 theorems, 0 axiom declarations, 0 constants with non-standard axioms
+AUDIT ClayYM: 619 constants, 374 theorems, 0 axiom declarations, 0 constants with non-standard axioms
 STATEMENT ClayYM.ClayYM_A: definition (Prop), OK
 STATEMENT ClayYM.ClayYM_B: definition (Prop), OK
 STATEMENT ClayYM.ClayYM_AB: definition (Prop), OK
 sympy_constantes.py  RC=0
 constants: output identical to constants/constantes_verifiees.txt
+named hypothesis (OSReconstruction): 40 theorem statements mention it
+mutants.py           RC=0 ; MUTANTS: 30/30 killed
 VERIFY: PASS
 ```
 
@@ -115,7 +117,7 @@ Negative controls: adding `theorem t : (1 : ℕ) = 2 := by sorry` to the namespa
 
 The labels printed by the SymPy script (and the file names under `constants/`) are in French; they were kept unchanged when the comments were translated into English, so that the committed reference output stays byte-identical to the one checked before the translation.
 
-An additional check with an independent kernel was run locally on 2026-10-25 and is not part of the script: nanoda 0.4.19, on a `lean4export` dump of the 44 guards and the 3 statements, reported "Checked 51133 declarations with no errors", with only the three standard axioms.
+An additional check with an independent kernel was run locally on 2026-10-25 and is not part of the script: nanoda 0.4.19, on a `lean4export` dump of the 44 guards and the 3 statements, reported "Checked 51133 declarations with no errors", with only the three standard axioms. For v1.1-dev (2026-10-25, fresh copy made with `git archive`): a dump of the 88 guards and results of `Audit.lean`, the 3 statements, `QGap`, `OSReconstruction` and `HasMassGap` (94 constants) gave "Checked 52268 declarations with no errors", again with only the three standard axioms, and the negative witness (`1 = 2` by `sorry`) was rejected ("unpermitted axiom \"sorryAx\"").
 
 ## Repository layout
 
