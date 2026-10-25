@@ -58,6 +58,54 @@ import ClayYM
 #print axioms ClayYM.confI_traceless
 #print axioms ClayYM.ClayYM_AB.toA
 #print axioms ClayYM.ClayYM_AB.toB
+-- v1.1 — q-form of the gap, closure lemma, uniqueness of the vacuum (abstract layer)
+#print axioms ClayYM.Transfer.IsBilin.trunc_trunc
+#print axioms ClayYM.Transfer.QGapOn.of_tendsto
+#print axioms ClayYM.Transfer.MassGapOn.qGapOn
+#print axioms ClayYM.Transfer.decay_of_qbound
+#print axioms ClayYM.Transfer.Recon.qbound
+#print axioms ClayYM.Transfer.Recon.massGapOn_of_qGapOn
+#print axioms ClayYM.Transfer.Recon.vacuum_unique
+#print axioms ClayYM.Transfer.Recon.truncDense_univ
+#print axioms ClayYM.Transfer.Recon.massGapOn_univ_iff_opNorm
+-- v1.1 — the same results for the Schwinger kernels of ClayYM (named hypothesis: OSReconstruction)
+#print axioms ClayYM.rpForm_isBilin
+#print axioms ClayYM.rpForm_vac_vac
+#print axioms ClayYM.hasMassGap_iff_massGapOn
+#print axioms ClayYM.qGap_iff_qGapOn
+#print axioms ClayYM.HasMassGap.qGap
+#print axioms ClayYM.truncDense_univ
+#print axioms ClayYM.QGap.hasMassGap
+#print axioms ClayYM.QGap.hasMassGap_univ
+#print axioms ClayYM.exists_hasMassGap_iff_exists_qGap
+#print axioms ClayYM.neg_log_exp_div
+#print axioms ClayYM.hasMassGap_iff_opNorm
+#print axioms ClayYM.QGap.vacuum_unique
+#print axioms ClayYM.QGap.of_tendsto
+#print axioms ClayYM.normalized_of_tendsto
+#print axioms ClayYM.hasMassGap_of_tendsto
+#print axioms ClayYM.vacuum_unique_of_tendsto
+#print axioms ClayYM.trivRecon
+#print axioms ClayYM.trivS_qGap
+#print axioms ClayYM.trivS_conditional_chain
+-- v1.1 — guard (b): spectral ladder H e_n = e_n / n (every truncation gapped, not uniformly)
+#print axioms ClayYM.Ladder.isBilin
+#print axioms ClayYM.Ladder.trunc_qGap
+#print axioms ClayYM.Ladder.not_qGap
+#print axioms ClayYM.Ladder.truncation_inference_fails
+#print axioms ClayYM.Ladder.trunc_massGap
+#print axioms ClayYM.Ladder.not_massGap
+#print axioms ClayYM.Ladder.approx_qGap
+#print axioms ClayYM.Ladder.approx_converges
+#print axioms ClayYM.Ladder.closure_needs_same_q
+-- v1.1 — guard: hidden vacuum (non-cyclic algebra): density cannot be dropped
+#print axioms ClayYM.HiddenVacuum.recon
+#print axioms ClayYM.HiddenVacuum.isBilin
+#print axioms ClayYM.HiddenVacuum.qGap
+#print axioms ClayYM.HiddenVacuum.not_massGap
+#print axioms ClayYM.HiddenVacuum.second_vacuum
+#print axioms ClayYM.HiddenVacuum.density_needed
+#print axioms ClayYM.HiddenVacuum.uniqueness_needs_density
 -- The open statements are definitions of type `Prop` (no `theorem … := sorry`)
 #check (ClayYM.ClayYM_A : Prop)
 #check (ClayYM.ClayYM_B : Prop)

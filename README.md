@@ -4,6 +4,8 @@
 
 Archived on Zenodo: all versions [doi:10.5281/zenodo.23644079](https://doi.org/10.5281/zenodo.23644079); v1.0.0 [doi:10.5281/zenodo.23644080](https://doi.org/10.5281/zenodo.23644080).
 
+**v1.1 (development branch `v1.1-dev`, not released).** Adds the gap in the form `∃ q < 1, ∀ A ∈ 𝒜₀, ⟨v_A, e^{−ℓH}v_A⟩ ≤ q‖v_A‖²`, its equivalence with `HasMassGap` and with `‖e^{−tH}(1 − P_Ω)‖ ≤ e^{−Δt}`, the closure lemma under pointwise limits with the same `q`, and the uniqueness of the vacuum as a consequence. The Osterwalder–Schrader reconstruction is a named hypothesis (a structure passed as an argument), never an axiom. Two new guards (spectral ladder, hidden vacuum) and 30 mutation tests. See `STATEMENT.md`, §3.7 and §6.10. None of this is progress on the problem: it gives no mechanism for a gap.
+
 
 > **Status: candidate statement, unreviewed.** This repository contains Lean 4 *definitions* (`def … : Prop`) and compiled sanity checks. It is **not** a proof, a partial proof, or any progress on the Yang–Mills existence and mass gap problem, and nothing here asserts that the statements are true. The Lean code and the texts were written by AI agents under the direction of the author (see [AI use](#ai-use)). Please read [Limitations](#limitations) before using these statements.
 
@@ -71,7 +73,7 @@ These limitations are declared, not hidden; read them before using the statement
 - **Decoupled sums of two non-trivial OS theories,** for example `YM_{G₁} ⊗ YM_{G₂}` with `dim G₁ + dim G₂ = dim G`. They pass FP1–FP3, because the UV data are additive (`uvFingerprint_indepSum`). They are rejected only by indecomposability (`indepSum_not_YMFingerprint`).
 - **Local sector of 2D Yang–Mills.** Rejected by `FiniteMass` (`ym2d_local_sector_not_finiteMass`). The fact that this local sector is trivial is cited, not formalised.
 
-The full list, with the statements of the guards, is printed by `ClayYM/Audit.lean` (44 `#print axioms` lines).
+The full list, with the statements of the guards, is printed by `ClayYM/Audit.lean` (88 `#print axioms` lines in v1.1: the 44 guards of v1.0 and 44 results of v1.1).
 
 ## How to verify
 
@@ -83,14 +85,19 @@ cd yang-mills-lean-statement
 scripts/verify.sh
 ```
 
-The script runs `lake exe cache get`, `lake build ClayYM` and `lake build ClayYM.Audit`. It then runs `scripts/AuditAll.lean`, which collects the axioms of **every** declaration in the `ClayYM` namespace, not only the 44 listed in `Audit.lean`. Finally it runs `constants/sympy_constantes.py`, which prints its results to standard output and writes no file, saves that output in `logs/constantes_obtenues.txt`, and compares it with the committed reference `constants/constantes_verifiees.txt` using `diff`. It exits with code 0 only if all of the following hold:
+The script runs `lake exe cache get`, `lake build ClayYM` and `lake build ClayYM.Audit`. It then runs `scripts/AuditAll.lean`, which collects the axioms of **every** declaration in the `ClayYM` namespace, not only the 88 listed in `Audit.lean`. Finally it runs `constants/sympy_constantes.py`, which prints its results to standard output and writes no file, saves that output in `logs/constantes_obtenues.txt`, and compares it with the committed reference `constants/constantes_verifiees.txt` using `diff`. It exits with code 0 only if all of the following hold:
 - every build returns 0;
 - no log line contains `error`;
 - there is no `sorry` and no `sorryAx`;
 - every declaration depends only on `propext`, `Classical.choice`, `Quot.sound`;
 - there are no `axiom` declarations;
 - `ClayYM_A`, `ClayYM_B` and `ClayYM_AB` are definitions;
-- the SymPy script returns 0 and its output is identical to `constants/constantes_verifiees.txt`.
+- the SymPy script returns 0 and its output is identical to `constants/constantes_verifiees.txt`;
+- (v1.1) the named hypothesis `OSReconstruction` appears in the statements of the conditional theorems and in none of the unconditional ones (list printed by `scripts/AuditAll.lean`);
+- (v1.1) the literals of the q-form and of `HasMassGap` are unchanged;
+- (v1.1) `scripts/mutants.py` kills all 30 mutants: each changes one piece of text in a copy of the sources and must make the build of a designated declaration fail, while the unmutated control compiles.
+
+Set `CLAYYM_SKIP_CACHE_GET=1` to skip `lake exe cache get` when Mathlib is already built locally.
 
 Expected summary (observed on a fresh copy of this repository, 2026-10-25):
 
@@ -123,8 +130,11 @@ An additional check with an independent kernel was run locally on 2026-10-25 and
 | `ClayYM/Statement.lean` | **`ClayYM_A`, `ClayYM_B`, `ClayYM_AB`** (`def … : Prop`) |
 | `ClayYM/Fake/*.lean` | fake models and guards |
 | `ClayYM/Inhabited/*.lean` | SU(2) is a `CompactSimpleGroup`, `dim SU(2) = 3` |
-| `ClayYM/Audit.lean` | `#print axioms` of the 44 guards and controls (not part of the default target) |
-| `scripts/verify.sh`, `scripts/AuditAll.lean` | build, axiom audit of every declaration, constants check |
+| `ClayYM/Transfer.lean` (v1.1) | abstract layer: q-form `QGapOn`, closure lemma, semigroup estimate, reconstruction data `Recon` (named hypothesis), operator form |
+| `ClayYM/GapQ.lean` (v1.1) | `QGap`, `OSReconstruction`, equivalence with `HasMassGap`, closure lemma, uniqueness of the vacuum, `trivRecon` |
+| `ClayYM/Fake/SpectralLadder.lean`, `ClayYM/Fake/HiddenVacuum.lean` (v1.1) | guards of quantifiers: spectral ladder `H e_n = e_n/n`, hidden vacuum |
+| `ClayYM/Audit.lean` | `#print axioms` of the 88 guards, controls and v1.1 results (not part of the default target) |
+| `scripts/verify.sh`, `scripts/AuditAll.lean`, `scripts/mutants.py` | build, axiom audit of every declaration, named hypotheses, constants check, mutation tests (v1.1) |
 | `constants/` | SymPy script for the fingerprint constants and its expected output |
 | `STATEMENT.md` | correspondence with the Clay text, design choices, risks, fake models, comparisons |
 | `CITATION.cff`, `.zenodo.json` | citation metadata |

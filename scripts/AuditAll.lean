@@ -5,6 +5,7 @@ For each non-internal constant whose name starts with `ClayYM`, the axioms it de
 collected with `Lean.collectAxioms`. The script prints one summary line and lists every constant
 that depends on an axiom outside {propext, Classical.choice, Quot.sound}, every `axiom`
 declaration in the namespace, and the kind of the three statements (they must be definitions).
+v1.1: it also lists every theorem whose statement mentions the named hypothesis (OS reconstruction).
 -/
 import ClayYM
 import ClayYM.Audit
@@ -37,3 +38,22 @@ open Lean Elab Command
     | some (.defnInfo _) => logInfo m!"STATEMENT {nm}: definition (Prop), OK"
     | some _ => logInfo m!"STATEMENT {nm}: NOT a definition"
     | none => logInfo m!"STATEMENT {nm}: MISSING"
+
+-- v1.1: NAMED HYPOTHESES. The Osterwalder–Schrader reconstruction is never an axiom: it is the structure
+-- `ClayYM.Transfer.Recon` (Clay level: `ClayYM.OSReconstruction`), passed as an explicit argument.
+-- List every theorem of the namespace whose STATEMENT mentions it.
+#eval show CommandElabM Unit from do
+  let env ← getEnv
+  let named : List Name := [``ClayYM.OSReconstruction, ``ClayYM.Transfer.Recon]
+  let names := env.constants.fold (init := #[]) fun acc nm _ =>
+    if (`ClayYM).isPrefixOf nm && !nm.isInternal then acc.push nm else acc
+  let mut users : Array Name := #[]
+  for nm in names do
+    match env.find? nm with
+    | some (.thmInfo info) =>
+      if info.type.getUsedConstants.any (fun c => named.contains c) then users := users.push nm
+    | _ => pure ()
+  let sorted := users.qsort (fun a b => a.toString < b.toString)
+  logInfo m!"NAMED HYPOTHESIS (OSReconstruction / Transfer.Recon) in the statement of {users.size} theorems"
+  for nm in sorted do
+    logInfo m!"NAMED HYPOTHESIS USED BY: {nm}"
