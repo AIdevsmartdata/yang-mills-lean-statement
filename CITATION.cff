@@ -12,7 +12,7 @@ authors:
 repository-code: "https://github.com/AIdevsmartdata/yang-mills-lean-statement"
 license: Apache-2.0
 doi: "10.5281/zenodo.23644079"
-version: "1.0.0"
+version: "1.1.0"
 date-released: "2026-10-25"
 abstract: >-
   Lean 4 / Mathlib definitions of three candidate formal statements of the Clay Millennium
@@ -24,7 +24,11 @@ abstract: >-
   not a proof and not progress on the problem. Declared limitations: A and AB require the Wilson
   lattice route, OS reconstruction is not formalised, and the field content is partial. The Lean
   code and the texts were written by AI agents (Claude, Anthropic) under the direction of the
-  author; the verifications are mechanical (see the README).
+  author; the verifications are mechanical (see the README). Version 1.1.0 adds the gap in the form
+  "there is q < 1 such that for all A in a generating algebra, <v_A, exp(-lH) v_A> <= q |v_A|^2", its
+  equivalence with the spectral gap (one direction under the named hypothesis OSReconstruction), the
+  closure lemma under limits with the same q, the uniqueness of the vacuum as a consequence, and
+  quantifier guards; it also corrects two sentences of the v1.0.0 text (see CHANGELOG.md).
 keywords:
   - Yang–Mills
   - mass gap
