@@ -106,6 +106,13 @@ import ClayYM
 #print axioms ClayYM.HiddenVacuum.second_vacuum
 #print axioms ClayYM.HiddenVacuum.density_needed
 #print axioms ClayYM.HiddenVacuum.uniqueness_needs_density
+-- v1.1 — guard: hidden slow mode (density cannot be replaced by the uniqueness of the vacuum)
+#print axioms ClayYM.HiddenSlowMode.recon2
+#print axioms ClayYM.HiddenSlowMode.isBilin2
+#print axioms ClayYM.HiddenSlowMode.qGap2
+#print axioms ClayYM.HiddenSlowMode.vacuum_unique2
+#print axioms ClayYM.HiddenSlowMode.not_massGap_one
+#print axioms ClayYM.HiddenSlowMode.density_needed_unique_vacuum
 -- The open statements are definitions of type `Prop` (no `theorem … := sorry`)
 #check (ClayYM.ClayYM_A : Prop)
 #check (ClayYM.ClayYM_B : Prop)

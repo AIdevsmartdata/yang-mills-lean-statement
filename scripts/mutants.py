@@ -6,7 +6,10 @@ then compiles the mutated copy with `lake env lean` against the already-built li
 A mutant passes the test ("killed") only if
   * the unmutated control file of the same group compiles (RC = 0, no `error`), and
   * the mutated file FAILS (RC != 0), with at least one `error` inside the declaration named as its
-    target (so that it fails for the intended reason).
+    target. This is a LOCALISED failure of the existing proof (possibly through a cascade from an
+    earlier error, which is reported): it certifies a dependency of the derivation, not by itself a
+    mathematical obstruction. Semantic necessity is established only by the guard theorems
+    (SpectralLadder, HiddenVacuum, HiddenSlowMode).
 Files are written under logs/mutants/. Exit code 0 only if every mutant is killed.
 
 Groups (single files; a mutation of Transfer.lean is tested together with the file that uses it):
@@ -14,6 +17,7 @@ Groups (single files; a mutation of Transfer.lean is tested together with the fi
   TL  = Transfer.lean + Fake/SpectralLadder.lean
   TH  = Transfer.lean + Fake/HiddenVacuum.lean
   TG  = Transfer.lean + GapQ.lean
+  THS = Transfer.lean + Fake/HiddenVacuum.lean + Fake/HiddenSlowMode.lean
 """
 import os
 import re
@@ -44,17 +48,20 @@ FILES = {
     "T": "ClayYM/Transfer.lean",
     "L": "ClayYM/Fake/SpectralLadder.lean",
     "H": "ClayYM/Fake/HiddenVacuum.lean",
+    "S": "ClayYM/Fake/HiddenSlowMode.lean",
     "G": "ClayYM/GapQ.lean",
 }
+MODULES = {k: "import " + v[:-5].replace("/", ".") for k, v in FILES.items()}
 
 
 def combine(group, srcs):
-    """Concatenate the files of a group into one compilable file (imports of ClayYM.Transfer dropped)."""
+    """Concatenate the files of a group into one compilable file (imports of the inlined modules dropped)."""
     keys = list(group)
+    inlined = {MODULES[k] for k in keys}
     imps = []
     for k in keys:
         for l in imports(srcs[k]):
-            if l != "import ClayYM.Transfer" and l not in imps:
+            if l not in inlined and l not in imps:
                 imps.append(l)
     parts = ["\n".join(imps)]
     for k in keys:
@@ -184,13 +191,21 @@ MUTANTS = [
      "    rpForm R S (vac ι) (vac ι) t = S [] := by",
      "    rpForm R S (vac ι) (vac ι) t = 2 * S [] := by",
      "lemma rpForm_vac_vac", "rpForm_vac_vac"),
+    ("M31_slow_mode_gap_quarter", "THS", "S", None,
+     "theorem not_massGap_one : ¬ MassGapOn ops B2 Set.univ 1 := by",
+     "theorem not_massGap_one : ¬ MassGapOn ops B2 Set.univ (1 / 4) := by",
+     "theorem not_massGap_one", "HiddenSlowMode.not_massGap_one / density_needed_unique_vacuum"),
+    ("M32_slow_mode_vacuum_zero", "THS", "S", None,
+     "    w = ⟪recon2.ω, w⟫ • recon2.ω := by",
+     "    w = 0 := by",
+     "theorem vacuum_unique2", "HiddenSlowMode.vacuum_unique2"),
 ]
 
 # Declared type of each mutant: D = a definition is changed; H = a hypothesis is removed or weakened
 # (measures a dependency of the derivation, not the semantic necessity of the hypothesis); C = a conclusion
 # is strengthened (the mutated statement is false or at least not proved by the same argument); M = a guard
 # model or construction is changed.
-TYPES = {'M01': 'M', 'M02': 'C', 'M03': 'D', 'M04': 'D', 'M05': 'C', 'M06': 'C', 'M07': 'H', 'M08': 'H', 'M09': 'H', 'M10': 'C', 'M11': 'C', 'M12': 'M', 'M13': 'D', 'M14': 'D', 'M15': 'H', 'M16': 'M', 'M17': 'C', 'M18': 'C', 'M19': 'C', 'M20': 'C', 'M21': 'C', 'M22': 'M', 'M23': 'C', 'M24': 'C', 'M25': 'C', 'M26': 'C', 'M27': 'H', 'M28': 'C', 'M29': 'C', 'M30': 'C'}
+TYPES = {'M01': 'M', 'M02': 'C', 'M03': 'D', 'M04': 'D', 'M05': 'C', 'M06': 'C', 'M07': 'H', 'M08': 'H', 'M09': 'H', 'M10': 'C', 'M11': 'C', 'M12': 'M', 'M13': 'D', 'M14': 'D', 'M15': 'H', 'M16': 'M', 'M17': 'C', 'M18': 'C', 'M19': 'C', 'M20': 'C', 'M21': 'C', 'M22': 'M', 'M23': 'C', 'M24': 'C', 'M25': 'C', 'M26': 'C', 'M27': 'H', 'M28': 'C', 'M29': 'C', 'M30': 'C', 'M31': 'C', 'M32': 'C'}
 
 
 def apply_mutation(src, anchor, old, new):
@@ -207,15 +222,21 @@ def apply_mutation(src, anchor, old, new):
     return src[:i] + new + src[i + len(old):]
 
 
+DECL = re.compile(r"^\s*(@\[[^\]]*\]\s*)*((private|protected|noncomputable|partial|unsafe|nonrec)\s+)*"
+                  r"(theorem|lemma|def|abbrev|structure|class|inductive|instance|example|attribute|end\b|namespace|section|/-)")
+
+
 def decl_range(text, target):
     """Line range [a, b) of the declaration starting with `target` (up to the next declaration)."""
     lines = text.splitlines()
-    starts = [i for i, l in enumerate(lines) if l.startswith(target + " ") or l.startswith(target + "\n")
-              or l == target or l.startswith(target + " {") or l.startswith(target + " (")]
+    pat = re.compile(r"^\s*(@\[[^\]]*\]\s*)*((private|protected|noncomputable)\s+)*" + re.escape(target) + r"(\s|$)")
+    starts = [i for i, l in enumerate(lines) if pat.match(l)]
     if not starts:
         raise ValueError("target declaration not found: " + target)
+    if len(starts) > 1:
+        raise ValueError("target declaration not unique: " + target)
     a = starts[0]
-    decl = re.compile(r"^(theorem|lemma|def|abbrev|structure|instance|attribute|end |namespace|section|/-)")
+    decl = DECL
     b = len(lines)
     for j in range(a + 1, len(lines)):
         if decl.match(lines[j]):
@@ -280,11 +301,12 @@ def main():
             ok = False
             continue
         in_target = [l for l in errs if a <= l < b]
+        before = [l for l in errs if l < a]
         is_killed = controls[g] and rc != 0 and len(in_target) > 0
         killed += is_killed
         ok &= is_killed
         print(f"{name} [{TYPES[name[:3]]}]: RC={rc} errors={len(errs)} in target '{target}'={len(in_target)} "
-              f"-> {'KILLED' if is_killed else 'SURVIVED'}   [guards {guarded}]")
+              f"(earlier errors: {len(before)}) -> {'KILLED' if is_killed else 'SURVIVED'}   [guards {guarded}]")
     print(f"MUTANTS: {killed}/{len(MUTANTS)} killed")
     print("MUTATION TESTS: PASS" if ok else "MUTATION TESTS: FAIL")
     return 0 if ok else 1

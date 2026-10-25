@@ -16,7 +16,8 @@ the NAMED HYPOTHESIS `Recon` (a structure passed as an explicit argument, never 
 * `QGapOn.of_tendsto` : CLOSURE LEMMA (pointwise limits, along any filter, with the SAME `q`);
 * `decay_of_qbound`   : elementary semigroup estimate (bound at one time `ℓ` ⟹ bound `q^{t/ℓ}` at every
                         time `t ≥ 0`; no spectral theorem);
-* `Recon`             : reconstruction data (real inner product space, class map, transfer semigroup);
+* `Recon`             : reconstruction data (real Hilbert space, class map, strongly continuous
+                        transfer semigroup of self-adjoint contractions);
 * `Recon.massGapOn_of_qGapOn`     : q-form + density ⟹ mass gap `Δ = −log q / ℓ`;
 * `MassGapOn.qGapOn`              : mass gap `Δ` ⟹ q-form with `q = e^{−Δℓ}` (no reconstruction);
 * `Recon.vacuum_unique`           : q-form + density ⟹ every vector fixed by `e^{-ℓH}` is a multiple
@@ -283,15 +284,18 @@ end Decay
 
 /-- **Reconstruction data** for the OS form `B` (the conclusion of the Osterwalder–Schrader
 reconstruction theorem for the Hilbert space and the transfer semigroup — NOT proved here, used
-only as an explicit hypothesis): a real inner product space `H`, the class map `cls : V → H`, and
-`T t = e^{-tH}` (`t ≥ 0`), a semigroup of self-adjoint contractions fixing the vacuum, with
-`⟨[F], e^{-tH} [G]⟩ = B F G t`; the classes are dense (the reconstructed space is the completion of
-the classes, so the vacuum is cyclic for `V` by construction). Completeness of `H` is not needed. -/
+only as an explicit hypothesis): a real Hilbert space `H`, the class map `cls : V → H`, and a
+STRONGLY CONTINUOUS semigroup `T t` (`t ≥ 0`) of self-adjoint contractions fixing the vacuum, with
+`⟨[F], T t [G]⟩ = B F G t`; the classes are dense (the reconstructed space is the completion of the
+classes, so the vacuum is cyclic for `V` by construction). Such a semigroup is `T t = e^{-tH}` for a
+self-adjoint `H ≥ 0` (standard semigroup theory, not formalised). Completeness and strong
+continuity are required for this identification only: no theorem of this file uses them. -/
 structure Recon (o : VecOps V) (B : V → V → ℝ → ℝ) where
   /-- The physical Hilbert space. -/
   H : Type
   [instNormed : NormedAddCommGroup H]
   [instInner : InnerProductSpace ℝ H]
+  [instComplete : CompleteSpace H]
   /-- Class map `F ↦ [F]`. -/
   cls : V → H
   /-- Transfer semigroup `T t = e^{-tH}`. -/
@@ -302,9 +306,11 @@ structure Recon (o : VecOps V) (B : V → V → ℝ → ℝ) where
   T_symm : ∀ t, 0 ≤ t → ∀ x y, ⟪T t x, y⟫ = ⟪x, T t y⟫
   T_contr : ∀ t, 0 ≤ t → ‖T t‖ ≤ 1
   T_vac : ∀ t, 0 ≤ t → T t (cls o.Ω) = cls o.Ω
+  /-- Strong continuity at `0⁺` (with the semigroup law: a C₀-semigroup). -/
+  T_cont : ∀ x, Tendsto (fun t => T t x) (𝓝[≥] 0) (𝓝 x)
   dense : DenseRange cls
 
-attribute [instance] Recon.instNormed Recon.instInner
+attribute [instance] Recon.instNormed Recon.instInner Recon.instComplete
 
 namespace Recon
 

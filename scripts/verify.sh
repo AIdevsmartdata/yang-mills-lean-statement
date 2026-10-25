@@ -22,8 +22,10 @@ lake build ClayYM.Audit > logs/build_audit.log 2>&1;    rc=$?; echo "lake build 
 lake env lean scripts/AuditAll.lean > logs/audit_all.log 2>&1; rc=$?; echo "AuditAll.lean        RC=$rc"; [ $rc -eq 0 ] || fail=1
 n_err=$(grep -c "error" logs/build_lib.log logs/build_audit.log logs/audit_all.log | awk -F: '{s+=$2} END {print s}')
 n_sorry=$(grep -c "declaration uses .sorry.\|sorryAx" logs/build_lib.log logs/build_audit.log logs/audit_all.log | awk -F: '{s+=$2} END {print s}')
-n_print=$(grep -c "depends on axioms" logs/build_audit.log)
-n_nonstd_print=$(grep "depends on axioms" logs/build_audit.log | grep -v -c "depends on axioms: \[propext, Classical.choice, Quot.sound\]")
+# Lean wraps long messages: rejoin the continuation lines (starting with a space) before checking each axiom list.
+awk '/^ /{printf "%s", $0; next} {if (NR>1) print ""; printf "%s", $0} END{print ""}' logs/build_audit.log > logs/build_audit_joined.log
+n_print=$(grep -c "depends on axioms" logs/build_audit_joined.log)
+n_nonstd_print=$(grep "depends on axioms" logs/build_audit_joined.log | grep -v -c "depends on axioms: \[propext, Classical.choice, Quot.sound\]")
 echo "lines containing 'error'                 : $n_err"
 echo "sorry occurrences                         : $n_sorry"
 echo "#print axioms lines in ClayYM.Audit       : $n_print (non-standard: $n_nonstd_print)"

@@ -1,18 +1,22 @@
 /-
 ClayYM/Fake/HiddenVacuum.lean
 ============================
-FAKE MODEL: a hidden vacuum in an invisible sector, the mechanism of O ⊗ I.
-The transfer Hamiltonian on real Euclidean three-space has eigenvalues 0, 1, 0.
-The visible algebra A₀ contains the vacuum e₀ and the excitation e₁, but cannot see e₂.
-Its q-form holds although the full space has neither a mass gap nor a unique vacuum.
+FAKE MODEL (abstract transfer model, NOT a model of Schwinger kernels): a hidden vacuum in an
+invisible sector, an illustration of the mechanism O ⊗ I.
+The transfer Hamiltonian on real Euclidean three-space is diag(0, 1, 0).
+The visible SUBSPACE A₀ = {v | v 2 = 0} contains the vacuum e₀ and the excitation e₁, but not e₂.
+The q-form holds on A₀, yet `MassGapOn` relative to e₀ fails and the vacuum is not unique
+(e₂ is a second fixed vector). Spectrally, the gap above the whole zero-energy subspace is 1:
+what fails is the uniqueness of the vacuum, which `MassGapOn` (like `ClayYM.HasMassGap`) includes.
 
-Thus a q-form on a non-cyclic algebra does not imply either conclusion: the density
-hypothesis in `Recon.massGapOn_of_qGapOn` and `Recon.vacuum_unique` is indispensable.
-Uniqueness of the vacuum is not an additional hypothesis: it follows from the q-form
-and density, as proved in `Transfer.lean`.
+Thus a q-form on a non-cyclic set does not imply either conclusion: the density hypothesis of
+`Recon.massGapOn_of_qGapOn` and `Recon.vacuum_unique` cannot be dropped. Uniqueness of the vacuum
+is not an additional hypothesis: it follows from the q-form, the normalisation and density, as
+proved in `Transfer.lean`. See `HiddenSlowMode.lean` for the same failure with a unique vacuum.
 -/
 import ClayYM.Transfer
 
+open Filter Topology
 open scoped RealInnerProductSpace
 
 noncomputable section
@@ -35,7 +39,7 @@ def ops : VecOps E3 := ⟨(· + ·), (· • ·), e 0⟩
 
 def B (v w : E3) (t : ℝ) : ℝ := ⟪v, T t w⟫
 
-/-- The visible algebra does not see mode 2. -/
+/-- The visible subspace does not see mode 2. -/
 def A0 : Set E3 := {v | v 2 = 0}
 
 @[simp] lemma e_apply (i j : Fin 3) : e i j = if j = i then 1 else 0 := by
@@ -116,6 +120,14 @@ def recon : Recon ops B where
   T_symm := by intro t _ x y; exact T_symm t x y
   T_contr := T_contr
   T_vac := by intro t _; exact T_e0 t
+  T_cont := by
+    intro x
+    have hc : Continuous fun t : ℝ => T t x := by
+      simp only [T_apply]
+      fun_prop
+    have h := hc.tendsto 0
+    rw [T_zero] at h
+    exact tendsto_nhdsWithin_of_tendsto_nhds h
   dense := Function.Surjective.denseRange (fun x => ⟨x, rfl⟩)
 
 theorem isBilin : IsBilin ops B where

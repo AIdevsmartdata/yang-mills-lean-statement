@@ -272,7 +272,7 @@ theorem vacuum_unique_of_tendsto {α : Type*} {L : Filter α} [L.NeBot] {R : Com
 /-! ### Non-vacuity of the named hypothesis (trivial theory) -/
 
 /-- The trivial theory has an OS reconstruction (`H = ℝ`, `e^{-tH} = 1`): the named hypothesis is
-satisfiable. -/
+satisfiable (all its fields, completeness and strong continuity included). -/
 def trivRecon (R : CompRep ι d) : OSReconstruction R (trivS ι d) where
   H := ℝ
   cls := trivAmp
@@ -297,6 +297,9 @@ def trivRecon (R : CompRep ι d) : OSReconstruction R (trivS ι d) where
   T_vac := by
     intro t _
     simp
+  T_cont := by
+    intro x
+    exact tendsto_const_nhds
   dense := by
     apply Function.Surjective.denseRange
     intro r

@@ -3,7 +3,7 @@ ClayYM — candidate Lean statement of the Clay problem "Yang–Mills existence 
 (Jaffe–Witten 2000) in two variants (A: Wilson lattice limit; B: axiomatic + Yang–Mills
 fingerprint; AB: their conjunction), together with its FAKE MODELS (anti-vacuity guards).
 v1.1: q-form of the gap, closure lemma, uniqueness of the vacuum (Transfer, GapQ) and the
-quantifier guards SpectralLadder and HiddenVacuum.
+quantifier guards SpectralLadder, HiddenVacuum and HiddenSlowMode.
 See STATEMENT.md and README.md.
 -/
 import ClayYM.Basic
@@ -30,3 +30,4 @@ import ClayYM.Transfer
 import ClayYM.GapQ
 import ClayYM.Fake.SpectralLadder
 import ClayYM.Fake.HiddenVacuum
+import ClayYM.Fake.HiddenSlowMode
