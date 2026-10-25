@@ -1,6 +1,7 @@
 # Changelog
 
 ## v1.1.0 (2026-10-25)
+Archived on Zenodo: doi:10.5281/zenodo.23650415.
 
 ### Added
 - `QGap`: the mass gap in the form `∃ q < 1, ∀ A ∈ 𝒜₀, ⟨v_A, e^{−ℓH} v_A⟩ ≤ q‖v_A‖²`, and its equivalence with `HasMassGap`

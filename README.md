@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23644079.svg)](https://doi.org/10.5281/zenodo.23644079)
 
-Archived on Zenodo: all versions [doi:10.5281/zenodo.23644079](https://doi.org/10.5281/zenodo.23644079); v1.0.0 [doi:10.5281/zenodo.23644080](https://doi.org/10.5281/zenodo.23644080).
+Archived on Zenodo: all versions [doi:10.5281/zenodo.23644079](https://doi.org/10.5281/zenodo.23644079); v1.0.0 [doi:10.5281/zenodo.23644080](https://doi.org/10.5281/zenodo.23644080); v1.1.0 [doi:10.5281/zenodo.23650415](https://doi.org/10.5281/zenodo.23650415).
 
 **v1.1.0 (released 2026-10-25; see CHANGELOG.md, which lists two corrections to the v1.0.0 text).** Adds the gap in the form `∃ q < 1, ∀ A ∈ 𝒜₀, ⟨v_A, e^{−ℓH}v_A⟩ ≤ q‖v_A‖²`, its equivalence with `HasMassGap` and with `‖e^{−tH}(1 − P_Ω)‖ ≤ e^{−Δt}`, the closure lemma under pointwise limits with the same `q`, and the uniqueness of the vacuum as a consequence. The Osterwalder–Schrader reconstruction is a named hypothesis (a structure passed as an argument), never an axiom. Three new guards (spectral ladder, hidden vacuum, hidden slow mode) and 32 mutation tests. See `STATEMENT.md`, §3.7 and §6.10. None of this is progress on the problem: it gives no mechanism for a gap.
 
